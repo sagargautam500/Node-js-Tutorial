@@ -43,7 +43,7 @@ app.get("/contact-us", (req, res, next) => {
 });
 app.post("/contact-us",(req,res)=>{
   console.log("handling /contact-us path for POST", req.url, req.method);
-  res.send(`<h2>we will soon contact for you</h2>`);
+  res.send(`<h2>we will contact you shortly</h2>`);
 })
 
 app.listen(3002, () => {
