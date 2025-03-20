@@ -14,39 +14,32 @@
 // 3. Move all the html code to html files and serve them using the file helper.
 // 4. Also add a 404 page for this app.
 
+//external module
 const express = require("express");
+
+//core module
+const path = require("path");
+
+//localmodule
+const handleHome = require("./routes/homePage");
+const handleContactUs = require("./routes/contactPage");
+const rootDir = require("./utils/pathUtil");
 
 const app = express();
 
+//direct use urlencoded from express::
+app.use(express.urlencoded());
+
+// app.use((req, res, next) => {
+//   console.log(req.url, req.method, req.body);
+//   next();
+// });
+
+app.use(handleHome);
+app.use(handleContactUs);
+
 app.use((req, res, next) => {
-  console.log("first middleware", req.url, req.method);
-  next();
-});
-app.use("/", (req, res, next) => {
-  console.log("second middleware", req.url, req.method);
-  next(); //if same path use for multiple middleware then need next()
-});
-
-app.get("/", (req, res, next) => {
-  console.log("handling / path now", req.url, req.method);
-  res.send("<h1>welcome to the practice set start</h1>");
-});
-
-app.get("/contact-us", (req, res, next) => {
-  console.log("handling /contact-us path for GET ", req.url, req.method);
-  res.send(`
-            <h1>please fill details now</h1>
-            <form action="contact-us" method="POST">
-             <input type="text" name="Name" placeholder="enter your name" required />
-             <input type="email" name="Email" placeholder="enter your email" required />
-             <input type="submit" />
-            </form>
-            `);
-});
-
-app.post("/contact-us", (req, res) => {
-  console.log("handling /contact-us path for POST", req.url, req.method);
-  res.send(`<h2>we will contact you shortly</h2>`);
+  res.status(404).sendFile(path.join(rootDir, "views", "404.html"));
 });
 
 app.listen(3002, () => {
