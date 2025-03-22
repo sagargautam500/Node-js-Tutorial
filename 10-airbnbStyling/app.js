@@ -15,7 +15,9 @@ const app = express();
 // app.use(bodyParser.urlencoded());
 app.use(express.urlencoded()); //direct use urlencoded from express::
 
-app.use(express.static(path.join(rootDir,'public'))) // for styling i.e css used 
+// for styling i.e css used 
+// app.use(express.static(path.join(rootDir,'public'))) 
+app.use(express.static('public'));  
 
 app.use(userRouter);
 app.use("/host",hostRouter);
