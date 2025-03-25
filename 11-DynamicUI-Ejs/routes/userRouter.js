@@ -15,7 +15,7 @@ userRouter.get("/", (req, res, next) => {
   // res.sendFile(path.join(__dirname,'../','views','home.html'));
   res.sendFile(path.join(rootDir,'views','home.ejs'));
   // console.log("home page",registerHome);
-  res.render('home',{registerHome})
+  res.render('home',{registerHome,pageTitle:'home'})
 });
 
 module.exports=userRouter;
