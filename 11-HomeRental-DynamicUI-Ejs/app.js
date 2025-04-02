@@ -8,7 +8,7 @@ const express = require("express");
 //local module
 const userRouter = require("./routes/userRouter");
 const {hostRouter} = require("./routes/hostRouter");
-const rootDir=require('./utils/pathUtils');
+// const rootDir=require('./utils/pathUtils');           //not required in this case  now:::
 
 const app = express();
 
