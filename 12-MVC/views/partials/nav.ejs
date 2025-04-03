@@ -1,0 +1,17 @@
+<nav class="bg-amber-900 fixed top-0 w-full z-50 shadow-md">
+  <div class="flex justify-between items-center p-4">
+    <a href="/"><h1 class="text-white font-bold text-xl">🏠 Home Rental</h1></a>
+    <div class="mr-10 flex gap-10">
+      <a
+        class="ml-4 border-2 rounded-md px-4 py-2 bg-amber-500 text-white font-medium <%= currentPage==='home'?'bg-red-500': 'hover:bg-red-500 transition-all' %>"
+        href="/"
+        >Home</a
+      >
+      <a
+        class="ml-4 border-2 rounded-md px-4 py-2 bg-amber-600 text-white font-medium border-blue-600 <%= currentPage==='addHome'?'bg-red-500': 'hover:bg-red-500 transition-all' %>"
+        href="/host/add-home"
+        >Add Home</a
+      >
+    </div>
+  </div>
+</nav>
