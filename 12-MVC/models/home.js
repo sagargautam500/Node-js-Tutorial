@@ -4,10 +4,9 @@ const path=require('path');
 
 //local module:
 const rootDir=require('../utils/pathUtils');
-const { error } = require('console');
 
 //fake database::
-let registerHome = [];
+// let registerHome = [];
 
 module.exports = class Home {
   constructor(houseName, price, location, rating, photoUrl) {
@@ -19,9 +18,11 @@ module.exports = class Home {
   }
 
   save() {
-    registerHome.push(this);
-    const homeDataPath=path.join(rootDir,'data','homes.json');
-    fs.writeFile(homeDataPath,JSON.stringify(registerHome),error=>console.log("write data error:",error))
+    Home.fetchAll((registerHome)=>{
+      registerHome.push(this);
+      const homeDataPath=path.join(rootDir,'data','homes.json');
+      fs.writeFile(homeDataPath,JSON.stringify(registerHome),error=>console.log("write data error:",error))
+    })
   }
 
   static fetchAll(callback) {
@@ -33,10 +34,11 @@ module.exports = class Home {
     // })
     // return registerHome;
     fs.readFile(homeDataPath,(err,data)=>{
-      if(!err){
-        registerHome=JSON.parse(data)
-      }
-      callback(registerHome)
+      callback(!err ?JSON.parse(data):[])
+      // if(!err){
+      //   registerHome=JSON.parse(data)
+      // }
+      // callback(registerHome)
     })
   }
 };

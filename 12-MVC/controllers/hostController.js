@@ -1,7 +1,7 @@
 const Home = require("../models/home");
 
 exports.getAddHome = (req, res, next) => {
-  res.render("addHome", { pageTitle: "addHome", currentPage: "addHome" });
+  res.render("host/addHome", { pageTitle: "addHome", currentPage: "addHome" });
 };
 
 exports.postAddHome = (req, res, next) => {
@@ -11,28 +11,19 @@ exports.postAddHome = (req, res, next) => {
   // const home=new Home(req.body.houseName,req.body.price,req.body.location,req.body.rating,req.body.photoUrl); //new object create
   home.save(); //save function call inside class Home
 
-  res.render("addedHome", {
+  res.render("host/addedHome", {
     registerHome: req.body,
     pageTitle: "Result",
     currentPage: "addHome",
   }); //send ejs file
 };
 
-exports.getHomes = (req, res, next) => {
-  // const registerHome=Home.fetchAll();
-  // res.render("home", {
-  //   registerHome,
-  //   pageTitle: "home page",
-  //   currentPage: "home",
-  // });
-
-  
-
+exports.getHostHomes = (req, res, next) => {
   Home.fetchAll((registerHome) => {
-    res.render("home", {
+    res.render("host/hostHomeList", {
       registerHome,
-      pageTitle: "home Page",
-      currentPage: "home",
+      pageTitle: "hostHome",
+      currentPage: "hostHome",
     });
   });
 };

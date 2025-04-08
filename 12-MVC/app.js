@@ -3,9 +3,9 @@
 const express = require("express");
 
 //local module
-const userRouter = require("./routes/userRouter");
-const { hostRouter } = require("./routes/hostRouter");
 const errorController = require("./controllers/error");
+const storeRouter = require("./routes/storeRouter");
+const { hostRouter } = require("./routes/hostRouter");
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.use(express.urlencoded()); //direct use urlencoded from express::
 
 app.use(express.static("public")); // for styling i.e css used
 
-app.use(userRouter);
+app.use(storeRouter);
 app.use("/host", hostRouter);
 app.use(errorController.get404);
 
