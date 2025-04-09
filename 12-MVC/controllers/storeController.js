@@ -1,6 +1,5 @@
 const Home = require("../models/home");
 
-
 exports.getIndex = (req, res, next) => {
   Home.fetchAll((registerHome) => {
     res.render("store/index", {
@@ -10,7 +9,6 @@ exports.getIndex = (req, res, next) => {
     });
   });
 };
-
 
 exports.getHomes = (req, res, next) => {
   // const registerHome=Home.fetchAll();
