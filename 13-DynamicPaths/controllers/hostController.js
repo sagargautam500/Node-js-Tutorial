@@ -5,10 +5,8 @@ exports.getAddHome = (req, res, next) => {
 };
 
 exports.postAddHome = (req, res, next) => {
-  // console.log(req.body)
-  const { houseName, price, location, rating, photoUrl } = req.body;
-  const home = new Home(houseName, price, location, rating, photoUrl);
-  // const home=new Home(req.body.houseName,req.body.price,req.body.location,req.body.rating,req.body.photoUrl); //new object create
+  const { houseName, price, location, rating, photoUrl,description } = req.body;
+  const home = new Home(houseName, price, location, rating, photoUrl,description);
   home.save(); //save function call inside class Home
 
   res.render("host/addedHome", {

@@ -1,0 +1,57 @@
+<%- include('../partials/head') %>
+</head>
+<body class="bg-gray">
+    <%- include('../partials/nav') %>
+
+    <main class="container mx-auto px-4 md:px-8 mt-20 max-w-6xl">
+        <section class="bg-white shadow-xl rounded-2xl p-6 md:p-10">
+            <h2 class="text-3xl md:text-4xl text-red-500 font-bold text-center mb-8">
+                Details of <%= home.houseName %>
+            </h2>
+
+            <a href="/" class="text-blue-600 hover:underline mb-6 inline-block">&larr; Back to listings</a>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="rounded-xl overflow-hidden shadow-sm hover:scale-105 transition-transform duration-300">
+                    <img src="<%= home.photoUrl %>" alt="<%= home.name %>" class="w-full h-96 object-cover">
+                </div>
+
+                <div class="space-y-6 text-gray-700">
+                    <% if (home.description) { %>
+                        <div class="border-b pb-4">
+                            <h3 class="text-2xl font-semibold mb-2">Description</h3>
+                            <p><%= home.description %></p>
+                        </div>
+                    <% } %>
+
+                    <% if (home.location) { %>
+                        <div class="border-b pb-4">
+                            <span class="text-2xl">Location:</span>
+                            <span class="text-2xl font-semibold mb-2"><%= home.location %></span>
+                        </div>
+                    <% } %>
+
+                    <% if (home.price) { %>
+                        <div class="border-b pb-4">
+                            <span class="text-2xl mb-2">Price:</span>
+                            <span class="text-green-600 text-xl font-bold">$<%= home.price %> / night</span>
+                        </div>
+                    <% } %>
+
+                    <% if (home.rating) { %>
+                        <div class=" border-b pb-4">
+                            <span class="text-2xl font-semibold mb-2">Rating:</span>
+                                <span class="ml-2 text-lg">★<%= home.rating %> / 5</span>
+                        </div>
+                    <% } %>
+
+                    <!-- Booking Button -->
+                    <div class="pt-6 mt-20">
+                        <%- include('../partials/favourite') ,{home:home}%> 
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

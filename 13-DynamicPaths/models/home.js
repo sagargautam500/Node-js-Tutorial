@@ -5,40 +5,37 @@ const path=require('path');
 //local module:
 const rootDir=require('../utils/pathUtils');
 
-//fake database::
-// let registerHome = [];
+const homeDataPath=path.join(rootDir,'data','homes.json');
+
 
 module.exports = class Home {
-  constructor(houseName, price, location, rating, photoUrl) {
+  constructor(houseName, price, location, rating, photoUrl,description) {
     this.houseName = houseName;
     this.price = price;
     this.location = location;
     this.rating = rating;
     this.photoUrl = photoUrl;
+    this.description=description;
   }
 
   save() {
+    this.id=Math.floor(Math.random() * 100);
     Home.fetchAll((registerHome)=>{
       registerHome.push(this);
-      const homeDataPath=path.join(rootDir,'data','homes.json');
       fs.writeFile(homeDataPath,JSON.stringify(registerHome),error=>console.log("write data error:",error))
     })
   }
 
   static fetchAll(callback) {
-    const homeDataPath=path.join(rootDir,'data','homes.json');
-    // fs.readFile(homeDataPath,(err,data)=>{
-    //   if(!err){
-    //     registerHome=JSON.parse(data)
-    //   }
-    // })
-    // return registerHome;
     fs.readFile(homeDataPath,(err,data)=>{
       callback(!err ?JSON.parse(data):[])
-      // if(!err){
-      //   registerHome=JSON.parse(data)
-      // }
-      // callback(registerHome)
     })
+  }
+
+  static fetchSingleData(homeId,callback) {
+   Home.fetchAll(homes=>{
+   const homeFound= homes.find((home)=>homeId==home.id)
+   callback(homeFound)
+   })
   }
 };
