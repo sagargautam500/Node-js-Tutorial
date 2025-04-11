@@ -19,7 +19,7 @@ module.exports = class Home {
   }
 
   save() {
-    this.id=Math.floor(Math.random() * 100);
+    this.id=Math.floor(Math.random() * 100).toString();
     Home.fetchAll((registerHome)=>{
       registerHome.push(this);
       fs.writeFile(homeDataPath,JSON.stringify(registerHome),error=>console.log("write data error:",error))
