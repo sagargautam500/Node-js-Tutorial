@@ -27,12 +27,14 @@
                 <p class="text-lg text-gray-700">💰 Price Per Night: <strong>NPR <%= home.price %></strong></p>
                 <p class="text-lg text-gray-700">⭐ Rating: <strong><%= home.rating %>/5</strong></p>
                 <div class="mt-4">
-                  <button class=" bg-amber-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-amber-600 transition-all">
+                  <a href="/host/editHome/<%=home.id %>?editing=true" class=" bg-amber-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-amber-600 transition-all">
                     Edit
-                  </button>
-                  <button class=" bg-red-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-amber-600 transition-all">
-                    Delete
-                  </button>
+                  </a>
+                  <form action="/host/deleteHome/<%=home.id %>" method="POST" >
+                    <button type="submit" class="m-2 bg-red-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-amber-600 transition-all">
+                      Delete
+                    </button>
+                  </form>
                 </div>
               </div>
             </div>

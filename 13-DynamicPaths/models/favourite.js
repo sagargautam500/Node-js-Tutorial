@@ -24,4 +24,12 @@ module.exports = class Favourite {
       callback(!err ? JSON.parse(data) : []);
     });
   }
+  
+  static fetchDeleteFavouriteData(delHomeId,callback) {
+    Favourite.getToFavourite(homeIds=>{
+      const HomesIds= homeIds.filter(homeId=>delHomeId!==homeId)
+      // console.log(HomesIds)
+      fs.writeFile(favouriteDataPath,JSON.stringify(HomesIds),callback)
+    })
+  }
 };

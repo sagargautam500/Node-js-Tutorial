@@ -48,6 +48,18 @@ Favourite.addToFavourite(req.body.id,(err)=>{
 res.redirect("/favourite");
 }
 
+exports.postDeleteFavourite = (req, res, next) => {
+  const homeId = req.params.homeId;
+  // console.log("delete home id=",homeId);
+  Favourite.fetchDeleteFavouriteData(homeId, (err) => {
+    if (err) {
+      console.log("error while delete:", err);
+    }
+    res.redirect("/favourite");
+  });
+};
+
+
 exports.getHomeDetails = (req, res, next) => {
   const homeId = req.params.homeId;
   // console.log(homeId);
