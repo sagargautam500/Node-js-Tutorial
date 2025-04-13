@@ -1,56 +1,39 @@
-//core module 
-const fs=require('fs');
-const path=require('path');
-
-//local module:
-const rootDir=require('../utils/pathUtils');
+// //local module:
 const Favourite = require('./favourite');
+const db=require('../utils/database');
 
-const homeDataPath=path.join(rootDir,'data','homes.json');
+
 
 
 module.exports = class Home {
-  constructor(houseName, price, location, rating, photoUrl,description) {
+  constructor(houseName, price, location, rating, photoUrl,description,id) {
     this.houseName = houseName;
     this.price = price;
     this.location = location;
     this.rating = rating;
     this.photoUrl = photoUrl;
     this.description=description;
+    this.id=id;
   }
 
   save() {
-    // console.log("id checked :",this.id)
-    Home.fetchAll((registerHome)=>{
-      if(this.id){ //edit existing home 
-       registerHome= registerHome.map(home=>home.id===this.id ? this:home)
-      }else{   //add new home 
-        this.id=(Math.floor(Math.random() * 100)).toString();
-        registerHome.push(this);
-      }
-      fs.writeFile(homeDataPath,JSON.stringify(registerHome),error=>console.log("write data error:",error))
-    })
+    if(this.id){//update
+      return db.execute("UPDATE homes SET houseName=?, price=?, location=?, rating=?, photoUrl=?,description=? WHERE id=?",[this.houseName, this.price,this.location,this.rating,this.photoUrl,this.description,this.id])
+    }else{//insert
+      //  return db.execute(`INSERT INTO homes (houseName, price, location, rating, photoUrl,description) VALUES ('${ this.houseName}',${ this.price},'${ this.location}','${ this.rating}','${ this.photoUrl}','${ this.description}')`)//this not good idea . sql injection attack may be arise in this method
+        return db.execute("INSERT INTO homes (houseName, price, location, rating, photoUrl,description) VALUES(?,?,?,?,?,?)",[this.houseName, this.price,this.location,this.rating,this.photoUrl,this.description])
+    }
   }
 
-  static fetchAll(callback) {
-    fs.readFile(homeDataPath,(err,data)=>{
-      callback(!err ?JSON.parse(data):[])
-    })
+  static fetchAll() {
+   return db.execute("SELECT * FROM homes");
   }
 
-  static fetchSingleData(homeId,callback) {
-   Home.fetchAll(homes=>{
-   const homeFound= homes.find((home)=>homeId==home.id)
-   callback(homeFound)
-   })
+  static fetchSingleData(homeId) {
+    return db.execute("SELECT * FROM homes WHERE id=?",[homeId]);
   }
 
-  static fetchDeleteData(homeId,callback) {
-   Home.fetchAll(homes=>{
-   const Homes= homes.filter(home=>homeId!==home.id)
-   fs.writeFile(homeDataPath,JSON.stringify(Homes),()=>{
-    Favourite.fetchDeleteFavouriteData(homeId,callback)
-   })
-   })
+  static fetchDeleteData(homeId) {
+    return db.execute("DELETE FROM homes WHERE id=?",[homeId]);
   }
-};
+}

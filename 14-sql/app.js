@@ -6,15 +6,18 @@ const express = require("express");
 const errorController = require("./controllers/error");
 const storeRouter = require("./routes/storeRouter");
 const { hostRouter } = require("./routes/hostRouter");
-const db=require('./utils/database');
 
-db.execute("SELECT * FROM homes")
-// .then(result=>console.log(result))//both rows and fields are show
-.then(([rows,fields])=>{
-console.log("rows:",rows)  //return array consist actual data in the form of object 
-console.log("fields:",fields) //return array consist of datatype of our data
-})
-.catch(err=>console.log("error occur while fetch data from database:",err))
+//just testing code .............
+// const db=require('./utils/database');
+
+// db.execute("SELECT * FROM homes")
+// // .then(result=>console.log(result))//both rows and fields are show
+// .then(([rows,fields])=>{
+// console.log("rows:",rows)  //return array consist actual data in the form of object 
+// console.log("fields:",fields) //return array consist of datatype of our data
+// })
+// .catch(err=>console.log("error occur while fetch data from database:",err))
+//..........................................
 
 const app = express();
 

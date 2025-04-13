@@ -49,13 +49,12 @@
               placeholder="enter photoUrl "
               value="<%=editing?home.photoUrl:'' %>"
               >
-            <input 
+            <textarea 
               class="border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
               type="text" 
               name="description" 
               placeholder="enter house detail's... "
-              value="<%=editing?home.description:'' %>"
-              >
+              ><%=editing?home.description:'' %></textarea>
            
             <button class="bg-indigo-600 text-white rounded-lg p-3 font-semibold hover:bg-indigo-700 transition-all"
               type="submit">
