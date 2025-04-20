@@ -1,39 +1,47 @@
 // //local module:
+const { ObjectId } = require('mongodb');
+const { getDB } = require('../utils/database');
 const Favourite = require('./favourite');
-const db=require('../utils/database');
 
 
 
 
 module.exports = class Home {
-  constructor(houseName, price, location, rating, photoUrl,description,id) {
+  constructor(houseName, price, location, rating, photoUrl,description,_id) {
     this.houseName = houseName;
     this.price = price;
     this.location = location;
     this.rating = rating;
     this.photoUrl = photoUrl;
     this.description=description;
-    this.id=id;
+    if(_id){
+      this._id=_id;
+    }
   }
 
   save() {
-    if(this.id){//update
-      return db.execute("UPDATE homes SET houseName=?, price=?, location=?, rating=?, photoUrl=?,description=? WHERE id=?",[this.houseName, this.price,this.location,this.rating,this.photoUrl,this.description,this.id])
-    }else{//insert
-      //  return db.execute(`INSERT INTO homes (houseName, price, location, rating, photoUrl,description) VALUES ('${ this.houseName}',${ this.price},'${ this.location}','${ this.rating}','${ this.photoUrl}','${ this.description}')`)//this not good idea . sql injection attack may be arise in this method
-        return db.execute("INSERT INTO homes (houseName, price, location, rating, photoUrl,description) VALUES(?,?,?,?,?,?)",[this.houseName, this.price,this.location,this.rating,this.photoUrl,this.description])
+    if(_id){
+      let db=getDB();
+      // db.collection('homes').updateOne({_id:this._id},{})
+    }else{
+      let db=getDB();
+      return db.collection('homes').insertOne(this)
     }
   }
 
   static fetchAll() {
-   return db.execute("SELECT * FROM homes");
+    let db=getDB();
+   return db.collection('homes').find().toArray();
   }
 
   static fetchSingleData(homeId) {
-    return db.execute("SELECT * FROM homes WHERE id=?",[homeId]);
+    // console.log(homeId)
+    let db=getDB();
+    return db.collection('homes').find({_id:new ObjectId(String(homeId))}).next();
   }
 
   static fetchDeleteData(homeId) {
-    return db.execute("DELETE FROM homes WHERE id=?",[homeId]);
+    let db=getDB();
+    return db.collection('homes').deleteOne({_id:new ObjectId(String(homeId))});
   }
 }

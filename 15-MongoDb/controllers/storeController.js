@@ -3,7 +3,7 @@ const Home = require("../models/home");
 
 exports.getIndex = (req, res, next) => {
   Home.fetchAll()
-  .then(([registerHome])=>{          //rows=registerHome,[rows,fields]
+  .then((registerHome)=>{         
     res.render("store/index", {
       registerHome,
       pageTitle: "home rental",
@@ -14,7 +14,7 @@ exports.getIndex = (req, res, next) => {
 
 exports.getHomes = (req, res, next) => {
   Home.fetchAll()
-  .then(([registerHome] )=> {
+  .then((registerHome )=> {
     res.render("store/homeList", {
       registerHome,
       pageTitle: "home Page",
@@ -26,9 +26,9 @@ exports.getHomes = (req, res, next) => {
 exports.getFavourite = (req, res, next) => {
   Favourite.getToFavourite((favourites) => {
     Home.fetchAll()
-    .then( ([registerHome]) => {
+    .then( (registerHome) => {
       // Filter only homes that are in the favourites list
-      const favouriteHomes = registerHome.filter(home => favourites.includes(home.id));
+      const favouriteHomes = registerHome.filter(home => favourites.includes(home._id));
       // Render the favourite list view
       res.render("store/favouriteList", {
         favouriteHomes: favouriteHomes,
@@ -63,11 +63,9 @@ exports.getHomeDetails = (req, res, next) => {
   const homeId = req.params.homeId;
   // console.log(homeId);
   Home.fetchSingleData(homeId)
-  .then(([homeFound]) => {
-    const[home]=homeFound;
-    // console.log(homeFound);
+  .then((home) => {
     // console.log(home);
-    if (!homeFound) {
+    if (!home) {
       res.redirect("/homes");
     } else {
       res.render("store/homeDetail", {

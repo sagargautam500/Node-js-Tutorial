@@ -20,13 +20,13 @@ exports.postAddHome = (req, res, next) => {
     description
   );
 
-  home.save(); //save function call inside class Home
+  home.save().then(()=>console.log('home add successfully'))
   res.redirect("/host/host-homes");
 };
 
 exports.postEditHome = (req, res, next) => {
   // console.log(req.body);
-  const { id, houseName, price, location, rating, photoUrl, description } =
+  const { _id, houseName, price, location, rating, photoUrl, description } =
     req.body;
   const home = new Home(
     houseName,
@@ -35,14 +35,14 @@ exports.postEditHome = (req, res, next) => {
     rating,
     photoUrl,
     description,
-    id
+    _id
   );
   home.save()
   res.redirect("/host/host-homes");
 }
 
 exports.getHostHomes = (req, res, next) => {
-  Home.fetchAll().then(([registerHome]) => {
+  Home.fetchAll().then((registerHome) => {
     res.render("host/hostHomeList", {
       registerHome,
       pageTitle: "hostHome",
@@ -55,9 +55,7 @@ exports.getEditHome = (req, res, next) => {
   const homeId = req.params.homeId;
   const editing = req.query.editing === "true";
   // console.log(homeId,editing);
-  Home.fetchSingleData(homeId).then(([homes]) => {
-    const home = homes[0];
-    // console.log(home)
+  Home.fetchSingleData(homeId).then((home) => {
     if (!home) {
       console.log("home not found for editing !");
       return res.redirect("/host/host-homes");

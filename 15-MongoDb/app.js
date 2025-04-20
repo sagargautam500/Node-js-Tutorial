@@ -1,23 +1,11 @@
 //external module
-// const bodyParser = require("body-parser");
 const express = require("express");
 
 //local module
 const errorController = require("./controllers/error");
 const storeRouter = require("./routes/storeRouter");
 const { hostRouter } = require("./routes/hostRouter");
-
-//just testing code .............
-// const db=require('./utils/database');
-
-// db.execute("SELECT * FROM homes")
-// // .then(result=>console.log(result))//both rows and fields are show
-// .then(([rows,fields])=>{
-// console.log("rows:",rows)  //return array consist actual data in the form of object 
-// console.log("fields:",fields) //return array consist of datatype of our data
-// })
-// .catch(err=>console.log("error occur while fetch data from database:",err))
-//..........................................
+const {mongoConnect} = require("./utils/database");
 
 const app = express();
 
@@ -34,6 +22,8 @@ app.use("/host", hostRouter);
 app.use(errorController.get404); 
 
 const PORT = 3001;
-app.listen(PORT, () => {
-  console.log(`Server running at address http://localhost:${PORT}`);
-});
+mongoConnect(()=>{
+  app.listen(PORT, () => {
+    console.log(`Server running at address http://localhost:${PORT}`);
+  });
+})

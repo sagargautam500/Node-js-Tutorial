@@ -10,7 +10,7 @@
         </header>
         <main>
           <form action="/host/<%=editing ?'editHome':'add-home' %>" method="post" class="flex flex-col space-y-4">
-            <input type="hidden" name="id" value="<%=editing ? home.id:'' %>">
+            <input type="hidden" name="id" value="<%=editing ? home._id:'' %>">
             <input
               class="border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
               type="text" 
