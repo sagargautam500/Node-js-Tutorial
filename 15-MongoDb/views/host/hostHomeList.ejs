@@ -1,0 +1,51 @@
+<%- include('../partials/head') %>
+<body class="bg-gray-100">
+  <%- include('../partials/nav') %>
+
+  <div class="bg-blue-100 mt-20 p-6 rounded-xl shadow-lg max-w-6xl mx-auto">
+    <!-- Header Section -->
+    <header class="text-center p-5 bg-amber-950 text-white border-2 rounded-2xl shadow-md">
+      <h1 class="font-extrabold text-4xl tracking-wide">🏡 Registered Houses:</h1>
+    </header>
+
+    <!-- Main Section -->
+    <main class="mt-6">
+      <% if (registerHome.length > 0) { %>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 ">
+          <% registerHome.forEach((home) => { %>
+            <!-- House Card -->
+            <div class="bg-white rounded-lg shadow-xl p-5 border border-gray-200 hover:shadow-blue-300 transition-all duration-300
+            ">
+              <!-- House Image -->
+              <img src="<%= home.photoUrl %>" alt="House Image"
+                class="w-full h-48 object-cover rounded-lg shadow-md">
+              
+              <!-- House Details -->
+              <div class="mt-4 text-left">
+                <h2 class="text-2xl font-bold text-gray-800">🏠 <%= home.houseName %></h2>
+                <p class="text-lg text-gray-700">📍 Location: <strong><%= home.location %></strong></p>
+                <p class="text-lg text-gray-700">💰 Price Per Night: <strong>NPR <%= home.price %></strong></p>
+                <p class="text-lg text-gray-700">⭐ Rating: <strong><%= home.rating %>/5</strong></p>
+                <div class="mt-4">
+                  <a href="/host/editHome/<%=home.id %>?editing=true" class=" bg-amber-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-amber-600 transition-all">
+                    Edit
+                  </a>
+                  <form action="/host/deleteHome/<%=home.id %>" method="POST" >
+                    <button type="submit" class="m-2 bg-red-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-amber-600 transition-all">
+                      Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="text-center text-2xl font-semibold text-white p-3 bg-red-500 rounded-lg">
+          🚫 No registered houses available.
+        </p>
+      <% } %>
+    </main>
+  </div>
+</body>
+</html>
