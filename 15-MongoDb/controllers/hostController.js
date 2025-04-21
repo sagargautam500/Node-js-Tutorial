@@ -20,26 +20,33 @@ exports.postAddHome = (req, res, next) => {
     description
   );
 
-  home.save().then(()=>console.log('home add successfully'))
+  home.save().then(() => console.log("home add successfully"));
   res.redirect("/host/host-homes");
 };
 
 exports.postEditHome = (req, res, next) => {
-  // console.log(req.body);
-  const { _id, houseName, price, location, rating, photoUrl, description } =
+  const { id, houseName, price, location, rating, photoUrl, description } =
     req.body;
-  const home = new Home(
-    houseName,
-    price,
-    location,
-    rating,
-    photoUrl,
-    description,
-    _id
-  );
-  home.save()
-  res.redirect("/host/host-homes");
-}
+  // console.log(req.body)
+  try {
+    const home = new Home(
+      id,
+      houseName,
+      price,
+      location,
+      rating,
+      photoUrl,
+      description
+    );
+    home.save().then((result) => {
+      console.log("Home edited", result);
+    });
+    res.redirect("/host/host-homes");
+  } catch (err) {
+    console.error("❌ Failed to update home:", err);
+    res.status(500).send("Something went wrong while updating home.");
+  }
+};
 
 exports.getHostHomes = (req, res, next) => {
   Home.fetchAll().then((registerHome) => {
