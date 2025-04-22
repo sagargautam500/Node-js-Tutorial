@@ -11,14 +11,14 @@ exports.getAddHome = (req, res, next) => {
 exports.postAddHome = (req, res, next) => {
   const { houseName, price, location, rating, photoUrl, description } =
     req.body;
-  const home = new Home(
+  const home = new Home({
     houseName,
     price,
     location,
     rating,
     photoUrl,
     description
-  );
+});
 
   home.save().then(() => console.log("home add successfully"));
   res.redirect("/host/host-homes");
@@ -29,7 +29,7 @@ exports.postEditHome = (req, res, next) => {
     req.body;
   // console.log(req.body)
   try {
-    const home = new Home(
+    const home = new Home({
       id,
       houseName,
       price,
@@ -37,7 +37,7 @@ exports.postEditHome = (req, res, next) => {
       rating,
       photoUrl,
       description
-    );
+  });
     home.save().then((result) => {
       console.log("Home edited", result);
     });

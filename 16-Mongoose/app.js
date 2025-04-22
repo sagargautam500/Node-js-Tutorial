@@ -5,12 +5,12 @@ const express = require("express");
 const errorController = require("./controllers/error");
 const storeRouter = require("./routes/storeRouter");
 const { hostRouter } = require("./routes/hostRouter");
-const {mongoConnect} = require("./utils/database");
+const { default: mongoose } = require("mongoose");
 
 const app = express();
 
-app.set("view engine", "ejs");  
-app.set("views", "views"); 
+app.set("view engine", "ejs");
+app.set("views", "views");
 
 // app.use(bodyParser.urlencoded());
 app.use(express.urlencoded()); //direct use urlencoded from express::
@@ -19,11 +19,20 @@ app.use(express.static("public")); // for styling i.e css used
 
 app.use(storeRouter);
 app.use("/host", hostRouter);
-app.use(errorController.get404); 
+app.use(errorController.get404);
 
 const PORT = 3001;
-mongoConnect(()=>{
-  app.listen(PORT, () => {
-    console.log(`Server running at address http://localhost:${PORT}`);
+const db_path =
+  "mongodb+srv://sagar389:sagar389@rentalcluster.zliqyrl.mongodb.net/homerental?retryWrites=true&w=majority&appName=rentalCluster";
+
+mongoose
+  .connect(db_path)
+  .then(() => {
+    console.log("Database Connected...");
+    app.listen(PORT, () => {
+      console.log(`Server running at address http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log("Error Occur while connect to database:", err);
   });
-})
