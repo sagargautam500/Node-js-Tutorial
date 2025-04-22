@@ -17,8 +17,8 @@ exports.postAddHome = (req, res, next) => {
     location,
     rating,
     photoUrl,
-    description
-});
+    description,
+  });
 
   home.save().then(() => console.log("home add successfully"));
   res.redirect("/host/host-homes");
@@ -27,29 +27,36 @@ exports.postAddHome = (req, res, next) => {
 exports.postEditHome = (req, res, next) => {
   const { id, houseName, price, location, rating, photoUrl, description } =
     req.body;
-  // console.log(req.body)
-  try {
-    const home = new Home({
-      id,
-      houseName,
-      price,
-      location,
-      rating,
-      photoUrl,
-      description
-  });
-    home.save().then((result) => {
-      console.log("Home edited", result);
+  // console.log(req.body);
+
+  Home.findById(id)
+    .then((home) => {
+      home.houseName = houseName;
+      home.price = price;
+      home.location = location;
+      home.rating = rating;
+      home.photoUrl = photoUrl;
+      home.description = description;
+      home
+        .save()
+        .then((result) => {
+          console.log("home Updated:", result);
+        })
+        .catch((err) => {
+          console.error("Failed to Update home:", err);
+        });
+    })
+    .catch((err) => {
+      console.error("Failed to Find home:", err);
+      res.status(500).send("Something went wrong while updating home.");
+    })
+    .finally(() => {
+      res.redirect("/host/host-homes");
     });
-    res.redirect("/host/host-homes");
-  } catch (err) {
-    console.error("❌ Failed to update home:", err);
-    res.status(500).send("Something went wrong while updating home.");
-  }
 };
 
 exports.getHostHomes = (req, res, next) => {
-  Home.fetchAll().then((registerHome) => {
+  Home.find().then((registerHome) => {
     res.render("host/hostHomeList", {
       registerHome,
       pageTitle: "hostHome",
@@ -62,7 +69,7 @@ exports.getEditHome = (req, res, next) => {
   const homeId = req.params.homeId;
   const editing = req.query.editing === "true";
   // console.log(homeId,editing);
-  Home.fetchSingleData(homeId).then((home) => {
+  Home.findById(homeId).then((home) => {
     if (!home) {
       console.log("home not found for editing !");
       return res.redirect("/host/host-homes");
@@ -79,7 +86,7 @@ exports.getEditHome = (req, res, next) => {
 exports.postDeleteHome = (req, res, next) => {
   const homeId = req.params.homeId;
   // console.log("delete home id=",homeId);
-  Home.fetchDeleteData(homeId)
+  Home.findByIdAndDelete(homeId)//Home.deleteOne({_id:homeId})
     .then(() => {
       res.redirect("/host/host-homes");
     })
