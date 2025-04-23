@@ -5,6 +5,9 @@ exports.getAddHome = (req, res, next) => {
     pageTitle: "addHome",
     currentPage: "addHome",
     editing: false,
+    // isLoggedIn:req.isLoggedIn,
+    isLoggedIn:req.session.isLoggedIn,
+
   });
 };
 
@@ -61,6 +64,8 @@ exports.getHostHomes = (req, res, next) => {
       registerHome,
       pageTitle: "hostHome",
       currentPage: "hostHome",
+      // isLoggedIn:req.isLoggedIn,
+      isLoggedIn:req.session.isLoggedIn,
     });
   });
 };
@@ -79,6 +84,8 @@ exports.getEditHome = (req, res, next) => {
       pageTitle: "editHome",
       currentPage: "hostHome",
       editing: editing,
+      // isLoggedIn:req.isLoggedIn,
+      isLoggedIn:req.session.isLoggedIn,
     });
   });
 };

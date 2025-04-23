@@ -6,6 +6,14 @@ const errorController = require("./controllers/error");
 const storeRouter = require("./routes/storeRouter");
 const { hostRouter } = require("./routes/hostRouter");
 const { default: mongoose } = require("mongoose");
+const authRouter = require("./routes/authRouter");
+const session = require("express-session");
+const MongoDBStore  = require("connect-mongodb-session")(session);
+
+
+const db_path =
+  "mongodb+srv://sagar389:sagar389@rentalcluster.zliqyrl.mongodb.net/homerental?retryWrites=true&w=majority&appName=rentalCluster";
+
 
 const app = express();
 
@@ -17,13 +25,39 @@ app.use(express.urlencoded()); //direct use urlencoded from express::
 
 app.use(express.static("public")); // for styling i.e css used
 
+
+const store=new MongoDBStore({
+  uri:db_path,
+  collection:'sessions',
+})
+
+app.use(session({               //session middleware used
+  secret:'home rental project',
+  resave:false,
+  saveUninitialized:true,
+  store,
+}))
+
+// app.use((req,res,next)=>{ //session used
+// // console.log("cookie:",req.get('cookie'));
+// // req.isLoggedIn=req.get('cookie')?req.get('cookie').split('=')[1]==='true':'false'; //checking cookie status
+// req.isLoggedIn=req.session.isLoggedIn;
+// next()
+// })
+
+app.use(authRouter);
 app.use(storeRouter);
+app.use('/host',(req,res,next)=>{
+if(req.session.isLoggedIn){   //..........only login then access to view 
+  next()
+}else{
+  res.redirect('/login');
+}
+})
 app.use("/host", hostRouter);
 app.use(errorController.get404);
 
 const PORT = 3001;
-const db_path =
-  "mongodb+srv://sagar389:sagar389@rentalcluster.zliqyrl.mongodb.net/homerental?retryWrites=true&w=majority&appName=rentalCluster";
 
 mongoose
   .connect(db_path)
