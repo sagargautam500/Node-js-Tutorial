@@ -38,13 +38,6 @@ app.use(session({               //session middleware used
   store,
 }))
 
-// app.use((req,res,next)=>{ //session used
-// // console.log("cookie:",req.get('cookie'));
-// // req.isLoggedIn=req.get('cookie')?req.get('cookie').split('=')[1]==='true':'false'; //checking cookie status
-// req.isLoggedIn=req.session.isLoggedIn;
-// next()
-// })
-
 app.use(authRouter);
 app.use(storeRouter);
 app.use('/host',(req,res,next)=>{

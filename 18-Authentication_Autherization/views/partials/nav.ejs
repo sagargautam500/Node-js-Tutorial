@@ -1,7 +1,10 @@
 <nav class="bg-amber-900 fixed top-0 w-full z-50 shadow-md">
   <div class="flex justify-between items-center p-4">
     <a href="/">
-      <h1 class="text-white font-bold text-xl">🏠 Home Rental</h1>
+        <img
+          class="w-15 h-15 rounded-4xl"
+          src="../images/homeLogo.jpg"
+          alt="🏠 Home Rental">
     </a>
     <div class="mr-10 flex gap-10">
       <% if(isLoggedIn){ %>
@@ -31,6 +34,10 @@
         <a class="ml-4 border-2 rounded-md px-4 py-2 bg-amber-600 text-white font-medium border-blue-600 <%= currentPage==='login'?'bg-red-500': 'hover:bg-red-500 transition-all' %>"
           href="/login">
            Login
+        </a>
+        <a class="ml-4 border-2 rounded-md px-4 py-2 bg-amber-600 text-white font-medium border-blue-600 <%= currentPage==='signup'?'bg-red-500': 'hover:bg-red-500 transition-all' %>"
+          href="/signup">
+           Sign Up
         </a>
       <% }else{ %>
        <form action="/logout" method="POST">
