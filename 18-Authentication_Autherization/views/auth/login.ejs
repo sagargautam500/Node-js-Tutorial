@@ -1,26 +1,58 @@
 <%- include('../partials/head') %>
-  <body class="bg-gray-100 flex justify-center items-center min-h-screen">
-    <%- include('../partials/nav') %>
-      <div class="bg-white shadow-lg rounded-3xl p-8 w-full max-w-md">
-        <header class="text-center font-bold text-3xl text-gray-700 mb-6">
-          <h1>
-            Login with your Info
-          </h1>
-        </header>
-        <main>
-          <form action="/login" method="post" class="flex flex-col space-y-4">
-            <input class="border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
-              type="text" name="username" placeholder="Enter your email/username" required>
-            <input class="border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
-              type="password" name="password" placeholder="Enter your password" required>
 
-            <button class="bg-indigo-600 text-white rounded-lg p-3 font-semibold hover:bg-indigo-700 transition-all"
-              type="submit">
-              Sign In
-            </button>
-          </form>
-        </main>
-      </div>
-  </body>
+<body class="bg-gradient-to-br from-indigo-100 to-blue-100 min-h-screen flex justify-center items-center px-4">
+  <%- include('../partials/nav') %>
 
-  </html>
+  <div class="bg-white shadow-2xl rounded-3xl px-10 py-12 w-full max-w-md">
+    
+    <!-- Page Header -->
+    <header class="text-center mb-8">
+      <h1 class="text-3xl font-extrabold text-gray-800">Login to Your Account</h1>
+      <p class="text-sm text-gray-500 mt-2">Welcome back! Please enter your credentials.</p>
+    </header>
+
+    <!-- Error Messages -->
+    <%- include('../partials/error') %>
+
+    <!-- Login Form -->
+    <main>
+      <form action="/login" method="post" class="flex flex-col space-y-5">
+        
+        <!-- Email Input -->
+        <input 
+          class="border-2 border-gray-300 rounded-xl p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" 
+          type="email" 
+          name="email" 
+          placeholder="Enter your email" 
+          value="<%= oldInput.email ? oldInput.email : '' %>" 
+          required
+        >
+
+        <!-- Password Input -->
+        <input 
+          class="border-2 border-gray-300 rounded-xl p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none transition-all" 
+          type="password" 
+          name="password" 
+          placeholder="Enter your password" 
+          required
+        >
+
+        <!-- Submit Button -->
+        <button 
+          class="bg-indigo-600 text-white rounded-xl p-3 font-semibold hover:bg-indigo-700 transition-all"
+          type="submit"
+        >
+          Sign In
+        </button>
+      </form>
+
+      <!-- Redirect to Signup -->
+      <p class="text-center text-sm text-gray-600 mt-6">
+        Don't have an account?
+        <a href="/signup" class="text-indigo-600 font-medium hover:underline">Sign up here</a>
+      </p>
+    </main>
+  </div>
+</body>
+
+</html>

@@ -1,5 +1,6 @@
-const Favourite = require("../models/Favourite");
+// const Favourite = require("../models/Favourite");
 const Home = require("../models/home");
+const User = require("../models/user");
 
 exports.getIndex = (req, res, next) => {
   // console.log("session:",req.session);
@@ -10,6 +11,7 @@ exports.getIndex = (req, res, next) => {
       currentPage: "index",
       // isLoggedIn:req.isLoggedIn,
       isLoggedIn:req.session.isLoggedIn,
+      user:req.session.user,
     });
   });
 };
@@ -22,82 +24,52 @@ exports.getHomes = (req, res, next) => {
       currentPage: "homes",
       // isLoggedIn:req.isLoggedIn,
       isLoggedIn:req.session.isLoggedIn,
+      user:req.session.user,
     });
   });
 };
 
-/*
-exports.getFavourite = (req, res, next) => {
-  Favourite.find().then((favouritesList) => {
-    const favourites = favouritesList.map((fave) => fave.homeId.toString());
-    // console.log('favourites',favourites);
-    Home.find().then((registerHome) => {
-      // console.log('registerHome',registerHome);
-      // Filter only homes that are in the favourites list
-      const favouriteHomes = registerHome.filter((home) =>
-        favourites.includes(home._id.toString())
-      );
-      // Render the favourite list view
-      res.render("store/favouriteList", {
-        favouriteHomes: favouriteHomes,
-        pageTitle: "FavouriteList",
-        currentPage: "favourite",
-      });
-    });
-  });
-};
-*/
 
-exports.getFavourite = (req, res, next) => {
-  Favourite.find().populate('homeId') .then((favouritesList) => {
-    // console.log('favouritesList',favouritesList);
-    const favouriteHomes = favouritesList.map((fav) => fav.homeId);
-    // console.log('favourites',favouriteHomes);
-      // Render the favourite list view
+
+exports.getFavourite = async(req, res, next) => {
+  const userId=req.session.user._id;
+  const user= await User.findById(userId).populate('favourites');
+         // console.log('user',user)
       res.render("store/favouriteList", {
-        favouriteHomes: favouriteHomes,
+        favouriteHomes: user.favourites,
         pageTitle: "FavouriteList",
         currentPage: "favourite",
         // isLoggedIn:req.isLoggedIn,
         isLoggedIn:req.session.isLoggedIn,
+        user:req.session.user,
       });
-    });
+    
 };
 
-exports.postFavourite = (req, res, next) => {
+exports.postFavourite = async(req, res, next) => {
   // console.log("favourite:",req.body)
   const homeId = req.body.id;
-  Favourite.findOne({ homeId: homeId }).then((existFav) => {
-    if (existFav) {
-      console.log("already exists favourite list..");
-    } else {
-      const fav = new Favourite({ homeId });
-      fav
-        .save()
-        .then((result) => {
-          console.log("Favourite homeId add:", result);
-        })
-        .catch((err) => {
-          console.log("error occur:", err);
-        });
-    }
+  const userId=req.session.user._id;
+  const user= await User.findById(userId);
+
+  if(!user.favourites.includes(homeId)){
+    user.favourites.push(homeId)
+    await user.save()
+  }
     res.redirect("/favourite");
-  });
 };
 
-exports.postDeleteFavourite = (req, res, next) => {
+exports.postDeleteFavourite = async(req, res, next) => {
   const homeId = req.params.homeId;
   // console.log("delete home id=",homeId);
-  Favourite.findOneAndDelete({ homeId: homeId }) //Favourite.deleteOne({ homeId: homeId })
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => {
-      console.log("error occur while delete data:", err);
-    })
-    .finally(() => {
+  const userId=req.session.user._id;
+  const user= await User.findById(userId);
+  
+  if(user.favourites.includes(homeId)){
+    user.favourites=user.favourites.filter(favId=>favId!=homeId)
+    await user.save();
+  }
       res.redirect("/favourite");
-    });
 };
 
 exports.getHomeDetails = (req, res, next) => {
@@ -114,6 +86,7 @@ exports.getHomeDetails = (req, res, next) => {
         currentPage: "homes",
         // isLoggedIn:req.isLoggedIn,
         isLoggedIn:req.session.isLoggedIn,
+        user:req.session.user,
       });
     }
   });
@@ -125,5 +98,6 @@ exports.getBooking = (req, res, next) => {
     currentPage: "booking",
     // isLoggedIn:req.isLoggedIn,
     isLoggedIn:req.session.isLoggedIn,
+    user:req.session.user,
   });
 };
