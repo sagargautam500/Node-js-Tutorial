@@ -1,0 +1,8 @@
+<% if (typeof errorMsg !== 'undefined' && errorMsg.length > 0) { %>
+  <ul class="text-red-600 bg-red-100 p-1 border-2 list-disc list-inside space-y-1 mb-4" role="alert">
+    <strong>Error!</strong>
+    <% errorMsg.forEach(err => { %>
+      <li><%= err %></li>
+    <% }) %>
+  </ul>
+<% } %>
