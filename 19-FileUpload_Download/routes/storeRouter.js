@@ -1,6 +1,6 @@
 //external module
 const express = require("express");
-const { getHomes, getBooking, getIndex, getFavourite, getHomeDetails, postFavourite, postDeleteFavourite } = require("../controllers/storeController");
+const { getHomes, getBooking, getIndex, getFavourite, getHomeDetails, postFavourite, postDeleteFavourite, postRules } = require("../controllers/storeController");
 
 const storeRouter = express.Router();
 

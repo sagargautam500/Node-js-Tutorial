@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const Home = require("../models/home");
 
 exports.getAddHome = (req, res, next) => {
@@ -6,21 +8,27 @@ exports.getAddHome = (req, res, next) => {
     currentPage: "addHome",
     editing: false,
     // isLoggedIn:req.isLoggedIn,
-    isLoggedIn:req.session.isLoggedIn,
-    user:req.session.user,
-
+    isLoggedIn: req.session.isLoggedIn,
+    user: req.session.user,
   });
 };
 
 exports.postAddHome = (req, res, next) => {
-  const { houseName, price, location, rating, photoUrl, description } =
-    req.body;
+  const { houseName, price, location, rating, description } = req.body;
+  // console.log('file:',req.files);
+  // console.log('photoFile:',req.files.photo[0].path);
+  // console.log('ruleFile:',req.files.rules[0].path);
+  if (!req.files.photo[0]) {
+    return res.status(422).send("Images are not provide:");
+  }
+  
   const home = new Home({
     houseName,
     price,
     location,
     rating,
-    photoUrl,
+    photo:req.files.photo[0].path,
+    rules:req.files.rules[0].path,
     description,
   });
 
@@ -29,22 +37,34 @@ exports.postAddHome = (req, res, next) => {
 };
 
 exports.postEditHome = (req, res, next) => {
-  const { id, houseName, price, location, rating, photoUrl, description } =
-    req.body;
-  // console.log(req.body);
-
+  const { id, houseName, price, location, rating, description } = req.body;
   Home.findById(id)
     .then((home) => {
       home.houseName = houseName;
       home.price = price;
       home.location = location;
       home.rating = rating;
-      home.photoUrl = photoUrl;
+      if (req.files['photo']) {
+        fs.unlink(home.photo, (err) => {
+          if (err) {
+            console.log("error occur while unlink photo ");
+          }
+        });
+        home.photo = req.files.photo[0].path;
+      }
+      if (req.files['rules']) {
+        fs.unlink(home.rules, (err) => {
+          if (err) {
+            console.log("error occur while unlink photo ");
+          }
+        });
+        home.rules = req.files.rules[0].path;
+      }
       home.description = description;
       home
         .save()
         .then((result) => {
-          console.log("home Updated:", result);
+          // console.log("home Updated:", result);
         })
         .catch((err) => {
           console.error("Failed to Update home:", err);
@@ -66,8 +86,8 @@ exports.getHostHomes = (req, res, next) => {
       pageTitle: "hostHome",
       currentPage: "hostHome",
       // isLoggedIn:req.isLoggedIn,
-      isLoggedIn:req.session.isLoggedIn,
-      user:req.session.user,
+      isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
     });
   });
 };
@@ -87,8 +107,8 @@ exports.getEditHome = (req, res, next) => {
       currentPage: "hostHome",
       editing: editing,
       // isLoggedIn:req.isLoggedIn,
-      isLoggedIn:req.session.isLoggedIn,
-      user:req.session.user,
+      isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
     });
   });
 };
@@ -96,7 +116,7 @@ exports.getEditHome = (req, res, next) => {
 exports.postDeleteHome = (req, res, next) => {
   const homeId = req.params.homeId;
   // console.log("delete home id=",homeId);
-  Home.findByIdAndDelete(homeId)//Home.deleteOne({_id:homeId})
+  Home.findByIdAndDelete(homeId) //Home.deleteOne({_id:homeId})
     .then(() => {
       res.redirect("/host/host-homes");
     })

@@ -1,68 +1,121 @@
 <%- include('../partials/head') %>
 
-  <body class="bg-gray-100 flex justify-center items-center min-h-screen">
+<body class="bg-gray-100 min-h-screen flex flex-col">
     <%- include('../partials/nav') %>
-      <div class="bg-white shadow-lg rounded-3xl p-8 w-full max-w-md">
-        <header class="text-center font-bold text-3xl text-gray-700 mb-6">
-          <h1>
-            <%= editing ? "Edit" :"Register" %> Your Home
-          </h1>
-        </header>
-        <main>
-          <form action="/host/<%=editing ?'editHome':'add-home' %>" method="post" class="flex flex-col space-y-4">
-            <input type="hidden" name="id" value="<%=editing ? home._id:'' %>">
-            <input
-              class="border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
-              type="text" 
-              name="houseName" 
-              placeholder="Enter your house name" 
-              value="<%=editing ? home.houseName:'' %>"
-              required
-              >
-            <input 
-              class="border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
-              type="text" 
-              name="price" 
-              placeholder="Price per night" 
-              value="<%=editing?home.price:'' %>"
-              required
-              >
-            <input 
-              class="border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
-              type="text" 
-              name="location" 
-              placeholder="Enter house location" 
-              value="<%=editing?home.location:'' %>"
-              required
-              >
-            <input 
-              class="border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
-              type="text" 
-              name="rating" 
-              placeholder="enter rating "
-              value="<%=editing?home.rating:'' %>"
-              >
-            <input 
-              class="border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
-              type="text" 
-              name="photoUrl" 
-              placeholder="enter photoUrl "
-              value="<%=editing?home.photoUrl:'' %>"
-              >
-            <textarea 
-              class="border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
-              type="text" 
-              name="description" 
-              placeholder="enter house detail's... "
-              ><%=editing?home.description:'' %></textarea>
-           
-            <button class="bg-indigo-600 text-white rounded-lg p-3 font-semibold hover:bg-indigo-700 transition-all"
-              type="submit">
-              <%= editing ? 'Update Home' :'Add Home' %>
-            </button>
-          </form>
-        </main>
-      </div>
-  </body>
 
-  </html>
+    <main class="flex-grow flex items-center justify-center p-4 mt-18">
+        <div class="bg-white shadow-2xl rounded-3xl w-full max-w-lg p-8 md:p-10 space-y-8">
+            
+            <!-- Header -->
+            <header class="text-center">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800">
+                    <%= editing ? "Edit" : "Register" %> Your Home
+                </h1>
+            </header>
+
+            <!-- Form -->
+            <form 
+                action="/host/<%= editing ? 'editHome' : 'add-home' %>" 
+                method="POST" 
+                enctype="multipart/form-data" 
+                class="space-y-5"
+            >
+                <input type="hidden" name="id" value="<%= editing ? home._id : '' %>">
+
+                <!-- House Name -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">House Name</label>
+                    <input 
+                        type="text" 
+                        name="houseName" 
+                        placeholder="Enter your house name"
+                        value="<%= editing ? home.houseName : '' %>"
+                        required
+                        class="w-full border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
+                    >
+                </div>
+
+                <!-- Price -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Price Per Night</label>
+                    <input 
+                        type="text" 
+                        name="price" 
+                        placeholder="Enter price"
+                        value="<%= editing ? home.price : '' %>"
+                        required
+                        class="w-full border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
+                    >
+                </div>
+
+                <!-- Location -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                    <input 
+                        type="text" 
+                        name="location" 
+                        placeholder="Enter location"
+                        value="<%= editing ? home.location : '' %>"
+                        required
+                        class="w-full border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
+                    >
+                </div>
+
+                <!-- Rating -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Rating (optional)</label>
+                    <input 
+                        type="text" 
+                        name="rating" 
+                        placeholder="Enter rating"
+                        value="<%= editing ? home.rating : '' %>"
+                        class="w-full border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none"
+                    >
+                </div>
+
+                <!-- Upload Photo -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload House Photo</label>
+                    <input 
+                        type="file" 
+                        accept="image/*" 
+                        name="photo"
+                        class="w-full border-2 rounded-lg p-3 bg-gray-50 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                    >
+                </div>
+
+                <!-- Upload Rules PDF -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload House Rules (PDF)</label>
+                    <input 
+                        type="file" 
+                        accept="application/pdf" 
+                        name="rules"
+                        class="w-full border-2 rounded-lg p-3 bg-gray-50 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                    >
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea 
+                        name="description" 
+                        placeholder="Enter house details..." 
+                        rows="4"
+                        class="w-full border-2 rounded-lg p-3 bg-gray-50 focus:ring-2 focus:ring-indigo-400 outline-none resize-none"
+                    ><%= editing ? home.description : '' %></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition-all text-lg"
+                >
+                    <%= editing ? "Update Home" : "Add Home" %>
+                </button>
+            </form>
+
+        </div>
+    </main>
+</body>
+</html>

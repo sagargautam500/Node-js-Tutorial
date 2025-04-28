@@ -101,3 +101,5 @@ exports.getBooking = (req, res, next) => {
     user:req.session.user,
   });
 };
+
+
