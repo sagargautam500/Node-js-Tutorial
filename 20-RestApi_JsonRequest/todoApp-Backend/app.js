@@ -4,10 +4,12 @@ const path = require("path");
 //external module
 const express = require("express");
 const { default: mongoose } = require("mongoose");
+const cors=require('cors');
 
 //local module
 const rootDir = require("./utils/pathUtils");
 const errorController=require('./controllers/error');
+const todoItemsRouter=require('./routes/todoItemsRouter')
 
 const db_path =
   "mongodb+srv://sagar389:sagar389@rentalcluster.zliqyrl.mongodb.net/todos?retryWrites=true&w=majority&appName=rentalCluster";
@@ -18,7 +20,11 @@ const app = express();
 app.use(express.urlencoded()); //direct use urlencoded from express::
 app.use(express.static(path.join(rootDir,"public")));   // for styling i.e css used
 // app.use(express.static("public")); // for styling i.e css used
+app.use(express.json());
+app.use(cors());
 
+
+app.use('/api/todos',todoItemsRouter);
 
 app.use(errorController.get404);
 

@@ -7,7 +7,7 @@ function WelcomeMsg() {
   // console.log(listItems)
   return (
     <div>
-          {listItems.length == 0 && <h1>Enjoy your Day</h1>}
+          {listItems.length == 0 && <h1 className="text-center text-gray-600 text-lg my-6" >Enjoy your Day</h1>}
 
     </div>
   )

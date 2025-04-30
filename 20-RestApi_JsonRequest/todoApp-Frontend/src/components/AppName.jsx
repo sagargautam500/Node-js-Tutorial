@@ -1,11 +1,11 @@
-/* eslint-disable no-unused-vars */
-import React from 'react'
-import styles from './AppName.module.css'
+import React from 'react';
 
 function AppName() {
   return (
-    <h1 className={styles.todoHeading}>Todo App</h1>
-  )
+    <h1 className="text-4xl font-extrabold text-center py-6 tracking-wide drop-shadow-sm">
+      Todo App
+    </h1>
+  );
 }
 
-export default AppName
+export default AppName;
